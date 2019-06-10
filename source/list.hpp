@@ -88,10 +88,10 @@ class List {
 
     // not implemented yet
     // do not forget about the initialiser list !
-  	/* ... */
-    List() {}
+  	/* Default-Konstruktor für leere Liste */
+    List(): first_(nullptr), last_(nullptr), size_(0) {}
 
-    /* ... */
+    /* Copy-Konstruktor für neue Liste, die einer anderen Liste gleicht */
     //TODO: Copy-Konstruktor using Deep-Copy semantics (Aufgabe 4.8)
 
   	/* ... */
@@ -162,7 +162,7 @@ class List {
 		//not implemented yet
     }
 
-  	/* ... */
+  	/* diese Methode gibt das erste Element zurück */
     T& front() {
     	assert(!empty());
   		//not implemented yet
@@ -171,7 +171,7 @@ class List {
     				// returned reference to tmp-Object
     }
 
-  	/* ... */
+  	/* diese Methode gibt das letzte Element zurück */
     T& back() {
     	assert(!empty());
 
@@ -183,15 +183,20 @@ class List {
 
   	/* diese Methode gibt zurück ob die Liste leer ist */
     bool empty() const {
-      //not implemented yet
-      return false;
+      if (size() == 0) {
+        return true;
+      }
+      else {
+        return false;
+      }
     };
 
-    /* diese Methode gibt die Menge der in der Liste enthaltenen Objekte zurück */
+    /* diese Methode gibt die Anzahl der in der Liste enthaltenen Objekte zurück */
     std::size_t size() const{
       //not implemented yet
-      return std::numeric_limits<std::size_t>::max();
-  };
+      //return std::numeric_limits<std::size_t>::max();
+      return size_;
+    };
 
 
   private:
