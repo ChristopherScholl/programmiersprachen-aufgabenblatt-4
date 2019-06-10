@@ -3,15 +3,22 @@
 # include <iostream>
 # include "list.hpp"
 
-TEST_CASE("teste Aufgabe2", "[ Aufgabe2 ]")
+TEST_CASE("teste Aufgabe2 & 3", "[ Aufgabe2&3 ]")
 {
-  List<int> list1;
-  //List<int> list2{0, 2, 3};
+  List<int> list;
 
-  REQUIRE(list1.empty() == true);
-  //REQUIRE(list2.empty() == false);
-  REQUIRE(list1.size() == 0);
-  //REQUIRE(list2.size() == 3);
+  REQUIRE(list.size() == 0);
+  REQUIRE(list.empty() == true);
+  list.push_front(5);
+  list.push_front(50);
+  list.push_front(500);
+  REQUIRE(list.size() == 3);
+  REQUIRE(list.empty() == false);
+  //REQUIRE(list.front() == 500);
+  //REQUIRE(list.back() == 50);
+  list.pop_front();
+  REQUIRE(list.size() == 2);
+  REQUIRE(list.empty() == false);
 }
 
 //TEST_CASE("add an element with push_front ", "[ modifiers ]")

@@ -12,10 +12,12 @@ template <typename T>
 class List;
 
 template <typename T>
-struct ListNode {
-  T         value = T();
-  ListNode* prev = nullptr;
-  ListNode* next = nullptr;
+class ListNode {
+  public:
+    ListNode<T>(T value, ListNode* prev, ListNode* next): value_(value), prev_(prev), next_(next) {}
+    T         value_ = T ();
+    ListNode* prev_ = nullptr;
+    ListNode* next_ = nullptr;
 };
 
 template <typename T>
@@ -143,43 +145,67 @@ class List {
 
     /* diese Methode fügt ein Element an den Anfang der Liste an */
     void push_front(T const& element) {
-      //not implemented yet
+     
+      ListNode<T>* nn;
+      ListNode<T> new_node = ListNode(element, nullptr, first_);
+      nn = &new_node;
+      first_ = nn;
+      size_ ++;
+      if (size_ == 1) {
+ //       last_ = std::addressof(new_node);
+        last_ = nn;
+      }
     }
 
     /* diese Methode fügt ein Element an das Ende der Liste an */
     void push_back(T const& element) {
-      //not implemented yet
+      ListNode<T> new_node{element, last_, nullptr};
+      last_ = std::addressof(new_node);
+      size_++;
+      if (size_ == 1) {
+        first_ = std::addressof(new_node);
+      }
     }
 
     /* diese Methode entfernt das erste Element der Liste */
     void pop_front() {
-      assert(!empty());
-      //not implemented yet
+      if (!empty()) {
+        if (size_ == 1) {
+          first_ = nullptr;
+          last_ = nullptr;
+        }
+        else {
+          first_ = first_->next_;
+          (*first_).prev_ = nullptr;
+        }
+        size_--;
+      }
+      // there is no need to tell if list is empty - we wanted to erase it anyway
     }
 
     /* diese Methode entfernt das letzte Element der Liste */
     void pop_back() {
-      assert(!empty());
-      //not implemented yet
+    	assert(!empty());
+		//not implemented yet
     }
 
-    /* diese Methode gibt das erste Element zurück */
+  	/* diese Methode gibt das erste Element zurück */
     T& front() {
-      assert(!empty());
-      //not implemented yet
-
-      return T(); //<- obviously wrong because of 
-            // returned reference to tmp-Object
+    	assert(!empty());
+  		//not implemented yet
+    	
+    	return first_->(*value); //<- obviously wrong because of 
+    				// returned reference to tmp-Object
     }
 
-    /* diese Methode gibt das letzte Element zurück */
+  	/* diese Methode gibt das letzte Element zurück */
     T& back() {
-      assert(!empty());
+    	assert(!empty());
 
-      //not implemented yet
+    	//not implemented yet
 
-      return T(); //<- obviously wrong because of
-            // returned reference to tmp-Object
+      return last_->(*value); //<- obviously wrong because of
+    				// returned reference to tmp-Object
     }
 
   	/* diese Methode gibt zurück ob die Liste leer ist */
