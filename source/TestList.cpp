@@ -129,16 +129,47 @@ TEST_CASE(" testing == operators ", "[ operators ]")
   REQUIRE(list1 != list5);
 }
 
-//TEST_CASE(" copy constructor ", "[ constructor ]")
-//{
-//  List <int > list;
-//  list.push_front(1);
-//  list.push_front(2);
-//  list.push_front(3);
-//  list.push_front(4);
-//  List <int > list2{ list };
-//  //REQUIRE(list == list2);
-//}
+TEST_CASE(" copy constructor ", "[ constructor ]")
+{
+  List <int> list;
+  list.push_front(1);
+  list.push_front(2);
+  list.push_front(3);
+  list.push_front(4);
+  List <int> list2{ list };
+  REQUIRE(list == list2);
+}
+
+TEST_CASE(" inserting ", "[ modifiers ]")
+{
+  List <int> list;
+  list.push_front(1);
+  list.push_front(2);
+  list.push_front(3);
+  list.push_front(4);
+  auto p = list.begin().next();
+  list.insert(p, 5);
+  REQUIRE(list.front() == 4);
+  REQUIRE(*(list.begin().next()) == 5);
+  REQUIRE(*p == 3);
+  REQUIRE(*(p.next()) == 2);
+  REQUIRE(list.back() == 1);
+}
+
+TEST_CASE(" reversing ", "[ modifiers ]")
+{
+  List <int> list;
+  list.push_front(1);
+  list.push_front(2);
+  list.push_front(3);
+  list.push_front(4);
+  list.reverse();
+  REQUIRE(list.front() == 1);
+  REQUIRE(list.back() == 4);
+  List<int> list2 = reverse(list);
+  REQUIRE(list2.front() == 4);
+  REQUIRE(list2.back() == 1);
+}
 
 int main(int argc, char* argv[])
 {

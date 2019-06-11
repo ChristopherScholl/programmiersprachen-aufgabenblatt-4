@@ -108,13 +108,18 @@ class List {
     using const_reference = T const&;
     using iterator        = ListIterator<T>;
 
-    // not implemented yet
-    // do not forget about the initialiser list !
   	/* Default-Konstruktor für leere Liste */
     List(): first_(nullptr), last_(nullptr), size_(0) {}
 
     /* Copy-Konstruktor für neue Liste, die einer anderen Liste gleicht */
-    //TODO: Copy-Konstruktor using Deep-Copy semantics (Aufgabe 4.8)
+    List(List<T> const& original): first_(nullptr), last_(nullptr), size_(0) {
+      auto p = original.first_;
+      for (size_t i = 0; i < original.size_; i++)
+      {
+        push_back(p->value);
+        p = p->next;
+      }
+    }
 
   	/* ... */
     //TODO: Move-Konstruktor (Aufgabe 4.13)
@@ -201,10 +206,53 @@ class List {
     }
 
     /* diese Methode fügt ein Element an einer vorgesehenen Stelle ein */
-    //TODO: member function insert
+    ListIterator<T> insert(ListIterator<T> pos, T const& element)
+    {
+      auto new_node = new ListNode<T>{ element,nullptr,nullptr };
+      if (pos.node == nullptr) {
+        new_node->prev = last_;
+        if (first_ == nullptr) {
+          first_ = new_node;
+        }
+        else {
+          last_->next = new_node;
+        }       
+        last_ = new_node;
+      }
+      else if (pos.node == first_) {
+        new_node->next = first_;
+        first_->prev = new_node;
+        first_ = new_node;
+      }
+      else {
+        new_node->prev = pos.node->prev;
+        new_node->next = pos.node;
+        new_node->prev->next = new_node;
+        new_node->next->prev = new_node;
+      }
+      size_++;
+      return ListIterator<T>{ new_node };
+    }
 
   	/* diese Methode dreht die Reihenfolge der Elemente in der Liste um */
-    //TODO: member function reverse
+    void reverse() 
+    {
+      auto p = begin().node;
+      for (size_t i = 0; i < size_; i++)
+      {
+        auto h = p->prev;
+        p->prev = p->next;
+        if (p->next == nullptr) {
+          p->next = h;
+        }
+        else {
+          p = p->next;
+          p->prev->next = h;
+        }
+      }
+      last_ = first_;
+      first_ = p;
+    }
 
     /* diese Methode fügt ein Element an den Anfang der Liste an */
     void push_front(T const& element) {
@@ -300,8 +348,19 @@ class List {
     ListNode<T>* last_;
 };
 
-/* ... */
-//TODO: Freie Funktion reverse
+/* Gibt eine umgedrehte Version einer Liste zurück */
+template<typename T>
+List<T> reverse(List<T> const& original) {
+  List<T> copy = List<T>(original);
+  List<T> reversed;
+  auto p = copy.begin().node;
+  for (size_t i = 0; i < copy.size(); i++)
+  {
+    reversed.push_front(p->value);
+    p = p->next;
+  }
+  return reversed;
+}
 
 /* ... */
 //TODO: Freie Funktion operator+ (4.14)
