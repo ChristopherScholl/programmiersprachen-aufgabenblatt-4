@@ -65,7 +65,7 @@ struct ListIterator {
 
   /* gibt zurück ob zwei Iteratoren auf das gleiche Element zeigen */
   bool operator==(ListIterator<T> const& x) const {
-    if (node == x.node || node == x.node) {
+    if (node == x.node) {
       return true;
     }
     else {
@@ -75,7 +75,7 @@ struct ListIterator {
 
   /* gibt zurück ob zwei Iteratoren nicht auf das gleiche Element zeigen */
   bool operator!=(ListIterator<T> const& x) const {
-    if (node == nullptr && x.node != nullptr || node != nullptr && x.node == nullptr || node != x.node) {
+    if (node != x.node) {
       return true;
     }
     else {
@@ -121,8 +121,12 @@ class List {
       }
     }
 
-  	/* ... */
-    //TODO: Move-Konstruktor (Aufgabe 4.13)
+  	/* Move-Konstruktor zum entlehren einer alten Liste in eine neue Liste */
+    List(List<T> && rhs) : first_(rhs.first_), last_(rhs.last_), size_(rhs.size_) {
+      rhs.first_ = nullptr;
+      rhs.last_ = nullptr;
+      rhs.size_ = 0;
+    }
 
     //TODO: Initializer-List Konstruktor (4.14)
   	/* ... */
