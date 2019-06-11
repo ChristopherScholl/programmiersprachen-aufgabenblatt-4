@@ -37,8 +37,7 @@ struct ListIterator {
   /* DESCRIPTION  operator->() */
   T* operator->() const {
     assert(node != nullptr);
-  	//not implemented yet
-  	return nullptr;
+  	return &(node->value);
   }
 
   /* erhöht pointer um 1 (next) und gibt Iterator mit erhöhtem pointer zurück  */
@@ -66,7 +65,7 @@ struct ListIterator {
 
   /* gibt zurück ob zwei Iteratoren auf das gleiche Element zeigen */
   bool operator==(ListIterator<T> const& x) const {
-    if (node == x.node || node->value == x.node->value) {
+    if (node == x.node || node == x.node) {
       return true;
     }
     else {
@@ -76,7 +75,7 @@ struct ListIterator {
 
   /* gibt zurück ob zwei Iteratoren nicht auf das gleiche Element zeigen */
   bool operator!=(ListIterator<T> const& x) const {
-    if (node == nullptr && x.node != nullptr || node != nullptr && x.node == nullptr || node->value != x.node->value) {
+    if (node == nullptr && x.node != nullptr || node != nullptr && x.node == nullptr || node != x.node) {
       return true;
     }
     else {
@@ -129,15 +128,53 @@ class List {
   	/* ... */
     //TODO: Assignment operator (Aufgabe 4.12)
 
-  	/* ... */
-    //TODO: operator== (Aufgabe 4.7)
+  	/* vergleicht ob zwei Listen die gleiche Länge und die gleichen Elemente haben */
+    template<typename T>
+    bool operator==(List<T> const& rhs)
+    {
+      if (size_ != rhs.size_) {
+        return false;
+      }
+      else if (size_ == 0) {
+        return true;
+      }
+      else {
+        auto pointer1 = first_;
+        auto pointer2 = rhs.first_;
+        for (size_t i = 0; i < size_; i++)
+        {
+          if (pointer1->value != pointer2->value) {
+            return false;
+          }
+        }
+      }
+    }
 
-  	/* ... */
-    //TODO: operator!= (Aufgabe 4.7)
+    /* vergleicht ob zwei Listen nicht die gleiche Länge und die gleichen Elemente haben */
+    template<typename T>
+    bool operator!=(List<T> const& rhs) 
+    {
+      if (size_ != rhs.size_) {
+        return true;
+      }
+      else if (size_ == 0) {
+        return false;
+      }
+      else {
+        auto pointer1 = first_;
+        auto pointer2 = rhs.first_;
+        for (size_t i = 0; i < size_; i++)
+        {
+          if (pointer1->value != pointer2->value) {
+            return true;
+          }
+        }
+      }
+    }
 
   	/* löscht die Liste */
     ~List() {
-      //unknown
+      clear();
     }
 
   	/* diese Methode gibt den Iterator, der auf den Anfang der Liste zeigt, zurück */

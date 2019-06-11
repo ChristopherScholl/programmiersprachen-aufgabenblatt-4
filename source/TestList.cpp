@@ -63,15 +63,6 @@ TEST_CASE(" should be empty after clearing ", "[ modifiers ]")
   REQUIRE(list.empty());
 }
 
-//TEST_CASE(" should be empty after clearing ", "[ modifiers ]")
-//{
-//  List < Circle2 > circle_list;
-//  circle_list.push_back(...);
-//  auto c_it = circle_list.begin();
-//  std::cout << "Der Radius des 1. Circles in der Liste ist: "
-//    << c_it->get_radius() << std::endl;
-//}
-
 TEST_CASE(" should be an empty range after default construction ",
   "[ iterators ]")
 {
@@ -105,6 +96,37 @@ TEST_CASE(" testing Iterators ", "[ iterators ]")
   REQUIRE(j != i);  // test von ==
   j = ++i;
   REQUIRE(j == i);  // test von !=
+
+  List <Circle2> circle_list;
+  circle_list.push_back(Circle2());
+  auto c_it = circle_list.begin();
+  std::cout << "Der Radius des 1. Circles in der Liste ist: "
+    << c_it->get_radius() << std::endl;
+  REQUIRE(c_it->get_radius() == 1);
+}
+
+TEST_CASE(" testing == operators ", "[ operators ]")
+{
+  List <int> list1;
+  list1.push_front(1);
+  list1.push_front(2);
+  list1.push_front(3);
+  List <int> list2;
+  list2.push_front(1);
+  list2.push_front(2);
+  list2.push_front(3);
+  List <int> list3;
+  list3.push_front(3);
+  list3.push_front(2);
+  list3.push_front(1);
+  List <int> list4;
+  list4.push_front(1);
+  list4.push_front(2);
+  List <int> list5;
+  REQUIRE(list1 == list2);
+  REQUIRE(list1 != list3);
+  REQUIRE(list1 != list4);
+  REQUIRE(list1 != list5);
 }
 
 //TEST_CASE(" copy constructor ", "[ constructor ]")
