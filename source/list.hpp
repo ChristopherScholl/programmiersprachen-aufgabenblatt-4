@@ -13,8 +13,6 @@ class List;
 
 template <typename T>
 struct ListNode {
-  //ListNode(){}
-  //ListNode (T v, ListNode* p, ListNode* n): value(v), prev(p), next(n){}
   T         value = T();
   ListNode* prev = nullptr;
   ListNode* next = nullptr;
@@ -32,39 +30,61 @@ struct ListIterator {
 
   /* DESCRIPTION  operator*() */
   T&  operator*()  const {
-  	//not implemented yet
-  	return {};
+    assert(node != nullptr);
+    return node->value;
   } 
 
   /* DESCRIPTION  operator->() */
   T* operator->() const {
+    assert(node != nullptr);
   	//not implemented yet
   	return nullptr;
   }
 
-  /* ... */
+  /* erhöht pointer um 1 (next) und gibt Iterator mit erhöhtem pointer zurück  */
   ListIterator<T>& operator++() {
-  	//not implemented yet
-  	return {};
+    if (nullptr != node) {
+      node = node->next;
+      return ListIterator{ node };
+    }
+    else {
+      return ListIterator{ nullptr };
+    }
   } //PREINCREMENT
 
-  /* ... */
+  /* erhöht pointer um 1 (next) und gibt Iterator mit altem pointer zurück */
   ListIterator<T> operator++(int) {
-  	//not implemented yet
-  	return {};
+    if (nullptr != node) {
+      ListNode <T>* node2 = node;
+      node = node->next;
+      return ListIterator{ node2 };
+    }
+    else {
+      return ListIterator{ nullptr };
+    }
   } //POSTINCREMENT (signature distinguishes)
 
-  /* ... */
+  /* gibt zurück ob zwei Iteratoren auf das gleiche Element zeigen */
   bool operator==(ListIterator<T> const& x) const {
-  	//not implemented yet
+    if (node == x.node || node->value == x.node->value) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 
-  /* ... */
+  /* gibt zurück ob zwei Iteratoren nicht auf das gleiche Element zeigen */
   bool operator!=(ListIterator<T> const& x) const {
-  	//not implemented yet
+    if (node == nullptr && x.node != nullptr || node != nullptr && x.node == nullptr || node->value != x.node->value) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 
-  /* ... */
+  /* gibt einen Iterator zurück, dessen Pointer auf das nächste Element zeigt */
   ListIterator<T> next() const {
     if (nullptr != node) {
       return ListIterator{node->next};
@@ -115,26 +135,32 @@ class List {
   	/* ... */
     //TODO: operator!= (Aufgabe 4.7)
 
-  	/* ... */
+  	/* löscht die Liste */
     ~List() {
-  		//TO IMPLEMENT PROPERLY
+      //unknown
     }
 
   	/* diese Methode gibt den Iterator, der auf den Anfang der Liste zeigt, zurück */
     ListIterator<T> begin() {
-  		////not implemented yet
-    	return ListIterator<T>{};
+      if (!empty()) { 
+        return ListIterator<T>{first_}; 
+      }
+      else {
+        return ListIterator<T>{nullptr};
+      }
     }
 
   	/* diese Methode gibt den Iterator, der auf das Ende (+1) der Liste zeigt, zurück */
     ListIterator<T> end() {
-  		////not implemented yet
-    	return ListIterator<T>{};
+    	return ListIterator<T>{nullptr};
     }
 
     /* diese Methode löscht alle Elemente der Liste */
     void clear() {
-  		////not implemented yet
+      for (std::size_t i = 0; i < size_; i++) {
+        pop_front();
+      }
+      size_ = 0;
     }
 
     /* diese Methode fügt ein Element an einer vorgesehenen Stelle ein */
@@ -173,11 +199,13 @@ class List {
     void pop_front() {
       if (!empty()) {
         if (size_ == 1) {
+          delete first_;
           first_ = nullptr;
           last_ = nullptr;
         }
         else {
           first_ = first_->next;
+          delete first_->prev;
           first_->prev = nullptr;
         }
         size_--;
@@ -188,11 +216,13 @@ class List {
     void pop_back() {
       if (!empty()) {
         if (size_ == 1) {
+          delete first_;
           first_ = nullptr;
           last_ = nullptr;
         }
         else {
           last_ = last_->prev;
+          delete last_->next;
           last_->next = nullptr;
         }
         size_--;
@@ -231,7 +261,6 @@ class List {
     std::size_t size_;
     ListNode<T>* first_;
     ListNode<T>* last_;
-    ListNode<T>* node;
 };
 
 /* ... */

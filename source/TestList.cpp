@@ -2,6 +2,7 @@
 # include <catch.hpp>
 # include <iostream>
 # include "list.hpp"
+# include "circle.hpp"
 
 TEST_CASE("teste Aufgabe2 & 3", "[ Aufgabe2&3 ]")
 {
@@ -61,32 +62,51 @@ TEST_CASE(" should be empty after clearing ", "[ modifiers ]")
   list.clear();
   REQUIRE(list.empty());
 }
-//
-////TEST_CASE(" should be empty after clearing ", "[ modifiers ]")
-////{
-////  List < Circle > circle_list;
-////  circle_list.push_back(...);
-////  auto c_it = circle_list.begin();
-////  std::cout << "Der Radius des 1. Circles in der Liste ist: "
-////    << c_it->get_radius() << std::endl;
-////}
-//
-//TEST_CASE(" should be an empty range after default construction ",
-//  "[ iterators ]")
+
+//TEST_CASE(" should be empty after clearing ", "[ modifiers ]")
 //{
-//  List <int> list;
-//  auto b = list.begin();
-//  auto e = list.end();
-//  REQUIRE(b == e);
+//  List < Circle2 > circle_list;
+//  circle_list.push_back(...);
+//  auto c_it = circle_list.begin();
+//  std::cout << "Der Radius des 1. Circles in der Liste ist: "
+//    << c_it->get_radius() << std::endl;
 //}
-//
-//TEST_CASE(" provide access to the first element with begin ", "[ iterators ]")
-//{
-//  List <int> list;
-//  list.push_front(42);
-//  REQUIRE(42 == *list.begin());
-//}
-//
+
+TEST_CASE(" should be an empty range after default construction ",
+  "[ iterators ]")
+{
+  List <int> list;
+  auto b = list.begin();
+  auto e = list.end();
+  REQUIRE(b == e);
+}
+
+TEST_CASE(" provide access to the first element with begin ", "[ iterators ]")
+{
+  List <int> list;
+  list.push_front(42);
+  REQUIRE(42 == *list.begin());
+}
+
+TEST_CASE(" testing Iterators ", "[ iterators ]")
+{
+  List <int> list;
+  list.push_front(1);
+  list.push_front(2);
+  list.push_front(3);
+  list.push_front(4);
+  auto i = list.begin();
+  REQUIRE((*i.node).value == 4);
+  i = i.next();
+  REQUIRE(*i == 3); // *i statt (*i.node).value
+  auto j = i++;
+  REQUIRE(*i == 2);
+  REQUIRE(*j == 3);
+  REQUIRE(j != i);  // test von ==
+  j = ++i;
+  REQUIRE(j == i);  // test von !=
+}
+
 //TEST_CASE(" copy constructor ", "[ constructor ]")
 //{
 //  List <int > list;
