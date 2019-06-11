@@ -13,6 +13,8 @@ class List;
 
 template <typename T>
 struct ListNode {
+  //ListNode(){}
+  //ListNode (T v, ListNode* p, ListNode* n): value(v), prev(p), next(n){}
   T         value = T();
   ListNode* prev = nullptr;
   ListNode* next = nullptr;
@@ -143,43 +145,70 @@ class List {
 
     /* diese Methode fügt ein Element an den Anfang der Liste an */
     void push_front(T const& element) {
-      //not implemented yet
+      auto new_node = new ListNode<T>{ element,nullptr,first_ };
+      if (!empty()) {
+        first_->prev = new_node;
+      }
+      else {
+        last_ = new_node;
+      }
+      first_ = new_node;
+      size_++;
     }
 
     /* diese Methode fügt ein Element an das Ende der Liste an */
     void push_back(T const& element) {
-      //not implemented yet
+      auto new_node = new ListNode<T>{ element,last_,nullptr };
+      if (!empty()) {
+        last_->next = new_node;
+      }
+      else {
+        first_ = new_node;
+      }
+      last_ = new_node;
+      size_++;
     }
 
     /* diese Methode entfernt das erste Element der Liste */
     void pop_front() {
-      assert(!empty());
-      //not implemented yet
+      if (!empty()) {
+        if (size_ == 1) {
+          first_ = nullptr;
+          last_ = nullptr;
+        }
+        else {
+          first_ = first_->next;
+          first_->prev = nullptr;
+        }
+        size_--;
+      }
     }
 
     /* diese Methode entfernt das letzte Element der Liste */
     void pop_back() {
-      assert(!empty());
-      //not implemented yet
+      if (!empty()) {
+        if (size_ == 1) {
+          first_ = nullptr;
+          last_ = nullptr;
+        }
+        else {
+          last_ = last_->prev;
+          last_->next = nullptr;
+        }
+        size_--;
+      }
     }
 
     /* diese Methode gibt das erste Element zurück */
     T& front() {
       assert(!empty());
-      //not implemented yet
-
-      return T(); //<- obviously wrong because of 
-            // returned reference to tmp-Object
+      return (*first_).value;
     }
 
     /* diese Methode gibt das letzte Element zurück */
     T& back() {
       assert(!empty());
-
-      //not implemented yet
-
-      return T(); //<- obviously wrong because of
-            // returned reference to tmp-Object
+      return (*last_).value;
     }
 
   	/* diese Methode gibt zurück ob die Liste leer ist */
@@ -202,7 +231,7 @@ class List {
     std::size_t size_;
     ListNode<T>* first_;
     ListNode<T>* last_;
-    ListNode<T> newNode;
+    ListNode<T>* node;
 };
 
 /* ... */
