@@ -28,13 +28,13 @@ struct ListIterator {
   using iterator_category = std::bidirectional_iterator_tag;
 
 
-  /* DESCRIPTION  operator*() */
+  /* gibt den Wert des Nodes zurück */
   T&  operator*()  const {
     assert(node != nullptr);
     return node->value;
   } 
 
-  /* DESCRIPTION  operator->() */
+  /* gibt eine Referenz auf den Wert des Nodes zurück */
   T* operator->() const {
     assert(node != nullptr);
   	return &(node->value);
